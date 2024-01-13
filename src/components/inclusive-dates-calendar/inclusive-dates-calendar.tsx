@@ -89,7 +89,7 @@ export class InclusiveDatesCalendar {
   @Prop() elementClassName?: string = "inclusive-dates-calendar";
   @Prop() firstDayOfWeek?: number = 0;
   @Prop() range?: boolean = false;
-  @Prop() labels?: InclusiveDatesCalendarLabels = defaultLabels;
+  @Prop() labels: InclusiveDatesCalendarLabels = defaultLabels;
   @Prop() locale?: string = navigator?.language || "en-US";
   @Prop() nextMonthButtonContent?: string;
   @Prop() nextYearButtonContent?: string;
@@ -164,6 +164,7 @@ export class InclusiveDatesCalendar {
       }
     }
   }
+
   @Watch("minDate")
   watchMinDate(newValue) {
     this.minDate = newValue;
@@ -438,6 +439,7 @@ export class InclusiveDatesCalendar {
   render() {
     const showFooter =
       this.showTodayButton || this.showClearButton || this.showKeyboardHint;
+    const labels = { ...defaultLabels, ...this.labels };
 
     return (
       <Host>
@@ -461,7 +463,7 @@ export class InclusiveDatesCalendar {
 
             {this.showYearStepper && (
               <button
-                aria-label={this.labels.previousYearButton}
+                aria-label={labels.previousYearButton}
                 class={this.getClassName("previous-year-button")}
                 aria-disabled={
                   this.disabled ||
@@ -489,7 +491,7 @@ export class InclusiveDatesCalendar {
             )}
             {this.showMonthStepper && (
               <button
-                aria-label={this.labels.previousMonthButton}
+                aria-label={labels.previousMonthButton}
                 class={this.getClassName("previous-month-button")}
                 aria-disabled={
                   this.disabled ||
@@ -520,7 +522,7 @@ export class InclusiveDatesCalendar {
             )}
             <span class={this.getClassName("current-month")}>
               <select
-                aria-label={this.labels.monthSelect}
+                aria-label={labels.monthSelect}
                 class={this.getClassName("month-select")}
                 aria-disabled={this.disabled}
                 name="month"
@@ -545,7 +547,7 @@ export class InclusiveDatesCalendar {
                 })}
               </select>
               <input
-                aria-label={this.labels.yearSelect}
+                aria-label={labels.yearSelect}
                 class={this.getClassName("year-select")}
                 aria-disabled={this.disabled}
                 max={this.maxDate ? this.maxDate.slice(0, 4) : 9999}
@@ -558,7 +560,7 @@ export class InclusiveDatesCalendar {
             </span>
             {this.showMonthStepper && (
               <button
-                aria-label={this.labels.nextMonthButton}
+                aria-label={labels.nextMonthButton}
                 class={this.getClassName("next-month-button")}
                 aria-disabled={
                   this.disabled ||
@@ -589,7 +591,7 @@ export class InclusiveDatesCalendar {
             )}
             {this.showYearStepper && (
               <button
-                aria-label={this.labels.nextYearButton}
+                aria-label={labels.nextYearButton}
                 class={this.getClassName("next-year-button")}
                 aria-disabled={
                   this.disabled ||
@@ -684,18 +686,18 @@ export class InclusiveDatesCalendar {
                         const getScreenReaderText = () => {
                           if (this.range) {
                             let suffix = !this.value
-                              ? `, ${this.labels.chooseAsStartDate}.`
+                              ? `, ${labels.chooseAsStartDate}.`
                               : "";
 
                             if (Array.isArray(this.value)) {
                               suffix = {
-                                1: `, ${this.labels.chooseAsEndDate}.`,
-                                2: `, ${this.labels.chooseAsStartDate}.`
+                                1: `, ${labels.chooseAsEndDate}.`,
+                                2: `, ${labels.chooseAsStartDate}.`
                               }[this.value.length];
                             }
 
                             return `${
-                              isSelected ? `${this.labels.selected}, ` : ""
+                              isSelected ? `${labels.selected}, ` : ""
                             }${Intl.DateTimeFormat(this.locale, {
                               day: "numeric",
                               month: "long",
@@ -703,7 +705,7 @@ export class InclusiveDatesCalendar {
                             }).format(day)}${suffix}`;
                           } else {
                             return `${
-                              isSelected ? `${this.labels.selected}, ` : ""
+                              isSelected ? `${labels.selected}, ` : ""
                             }${Intl.DateTimeFormat(this.locale, {
                               day: "numeric",
                               month: "long",
@@ -771,7 +773,7 @@ export class InclusiveDatesCalendar {
                     onClick={this.showToday}
                     type="button"
                   >
-                    {this.labels.todayButton}
+                    {labels.todayButton}
                   </button>
                 )}
                 {this.showClearButton && (
@@ -782,7 +784,7 @@ export class InclusiveDatesCalendar {
                     onClick={this.clear}
                     type="button"
                   >
-                    {this.labels.clearButton}
+                    {labels.clearButton}
                   </button>
                 )}
               </div>
@@ -802,7 +804,7 @@ export class InclusiveDatesCalendar {
                     >
                       <path d="M7 38q-1.2 0-2.1-.925Q4 36.15 4 35V13q0-1.2.9-2.1.9-.9 2.1-.9h34q1.2 0 2.1.9.9.9.9 2.1v22q0 1.15-.9 2.075Q42.2 38 41 38Zm0-3h34V13H7v22Zm8-3.25h18v-3H15Zm-4.85-6.25h3v-3h-3Zm6.2 0h3v-3h-3Zm6.15 0h3v-3h-3Zm6.2 0h3v-3h-3Zm6.15 0h3v-3h-3Zm-24.7-6.25h3v-3h-3Zm6.2 0h3v-3h-3Zm6.15 0h3v-3h-3Zm6.2 0h3v-3h-3Zm6.15 0h3v-3h-3ZM7 35V13v22Z" />
                     </svg>
-                    {this.labels.keyboardHint}
+                    {labels.keyboardHint}
                   </button>
                 )}
             </div>

@@ -91,8 +91,9 @@ export class InclusiveDates {
   @Prop() useStrictDateParsing?: boolean = false;
   // Labels used for internal translations
   @Prop() inclusiveDatesLabels?: InclusiveDatesLabels = defaultLabels;
+  @Prop() openCalendar: string = defaultLabels.openCalendar;
 
-  @Prop() inclusiveDatesCalendarLabels?: InclusiveDatesCalendarLabels;
+  @Prop() labels?: InclusiveDatesCalendarLabels;
 
   // Prevent hiding the calendar
   @Prop() inline?: boolean = false;
@@ -466,6 +467,11 @@ export class InclusiveDates {
     this.label = newValue;
   }
 
+  @Watch("openCalendar")
+  watchOpenCalendar(newValue: string) {
+    this.openCalendar = newValue;
+  }
+
   @Watch("disabled")
   watchDisabled(newValue) {
     this.disabledState = newValue;
@@ -531,7 +537,7 @@ export class InclusiveDates {
               class={this.getClassName("calendar-button")}
               disabled={this.disabledState}
             >
-              {this.inclusiveDatesLabels.openCalendar}
+              {this.openCalendar}
             </button>
           )}
         </div>
@@ -555,11 +561,7 @@ export class InclusiveDates {
             onChangeMonth={(event) =>
               this.handleChangedMonths(event.detail as MonthChangedEventDetails)
             }
-            labels={
-              this.inclusiveDatesCalendarLabels
-                ? this.inclusiveDatesCalendarLabels
-                : undefined
-            }
+            labels={this.labels}
             ref={(el) => (this.pickerRef = el)}
             startDate={this.startDate}
             firstDayOfWeek={this.firstDayOfWeek}
